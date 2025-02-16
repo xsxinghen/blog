@@ -39,7 +39,7 @@
         },
         {
             "ico": "rss",
-            "url": "https://suiyan.cc/rss.xml"
+            "url": "blog.xsxinghen.us.kg/rss.xml"
         }
     ],
     "nav": [
@@ -111,9 +111,9 @@
         },
         {
             "site_name": "碎言",
-            "site_url": "https://suiyan.cc",
+            "site_url": "blog.xsxinghen.us.kg",
             "site_description": "记录并分享个人学习Python、JavaScript的过程和笔记。Life is short, You need JavaScript and Python！",
-            "site_avatar": "https://suiyan.cc/assets/images/avatar.jpg"
+            "site_avatar": "blog.xsxinghen.us.kg/assets/images/avatar.jpg"
         }
     ]
     
