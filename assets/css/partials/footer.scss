@@ -1,0 +1,25 @@
+.footer {
+  color: gray;
+  font-size: 0.875rem;
+  padding: 60px 0 80px;
+  text-align: center;
+
+  a {
+    border-bottom: 1px solid #ccc;
+    color: gray;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #0056b3;
+    border-bottom: 1px solid #0056b3;
+  }
+
+  div {
+    margin-top: 5px;
+  }
+}
+
+.footer-separator {
+  margin: 0 5px;
+}

@@ -1,0 +1,95 @@
+{{ define "main" }}
+  <main class="container container-single">
+    <section class="main-section">
+      {{ $pageInMainSection := (in .Site.MainSections .Section) }}
+
+      {{/* 文章头部内容 */}}
+      {{ if not .Params.hideHeader }}
+        <div class="article-header">
+          {{ if .Params.cover }}
+            <img class="article-cover" src="{{ .Params.cover }}" alt="Article Cover" />
+          {{ end }}
+          <h1 class="article-title">{{ .Title }}</h1>
+          <div class="article-meta">
+            {{ $hidePublishDate := .Site.Params.article.hidePublishDate }}
+            {{ $publishDate := .Date.Format "2006-01-02" }}
+            {{ $modifyDate := .Lastmod.Format "2006-01-02" }}
+            {{ if not $hidePublishDate }}
+              <div class="article-meta-item">
+                {{ partial "icon" "calender" }}
+                <span>发布于</span>
+                <time>{{ .Date.Format "2006-01-02" }}</time>
+              </div>
+            {{ end }}
+            {{ if or $hidePublishDate (ne (.Date.Format "2006-01-02") (.Lastmod.Format "2006-01-02")) }}
+              <div class="article-meta-item">
+                {{ partial "icon" "calender" }}
+                <span>更新于</span>
+                <time>{{ .Lastmod.Format "2006-01-02" }}</time>
+              </div>
+            {{ end }}
+            <div class="article-meta-item">
+              {{ partial "icon" "time" }}
+              <span>{{ .WordCount }}字</span>
+              <span>&</span>
+              <span>{{ .ReadingTime }}分钟</span>
+            </div>
+            {{/* 标签 */}}
+            {{ with .GetTerms "tags" }}
+              <div class="article-meta-item article-tags">
+                {{ range . }}
+                  <a class="article-tag" href="{{ .RelPermalink }}">
+                    {{ partial "icon" "tag" }}
+                    <span>{{ .LinkTitle }}</span>
+                  </a>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+
+      {{/* 文章正文 */}}
+      <article class="article">
+        {{/* 通过正则给标题添加上锚点 */}}
+        {{ .Content | replaceRE "(<h[1-6] id=\"(.+)\".*>)(.*)(</h[1-6]>)" "${1}${3}<a class=\"header-anchor\" href=\"#${2}\">#</a>${4}" | safeHTML }}
+      </article>
+
+      {{/* 版权声明, 只有 main section 的文章有版权声明 */}}
+      {{ if and $pageInMainSection .Site.Copyright }}
+        <div class="article-copyright">
+          <ul>
+            <li><strong>文章作者</strong>{{ .Site.Params.author.name }}</li>
+            <li><strong>文章链接</strong><a href="{{ .Permalink }}">{{ .Permalink }}</a></li>
+            <li><strong>版权声明</strong>{{ .Site.Copyright }}</li>
+          </ul>
+        </div>
+      {{ end }}
+
+      {{/* 前后文章跳转链接 */}}
+      {{ if $pageInMainSection }}
+        {{ $mainPages := where .Site.RegularPages "Type" "in" .Site.MainSections }}
+        {{ if or ($mainPages.Prev . ) ($mainPages.Next .) }}
+          <div class="article-footer">
+            <div>
+              {{ with $mainPages.Prev . }}
+                <a class="article-footer-link" href="{{ .RelPermalink }}">
+                  {{ partial "icon" "left" }}{{ .Title }}
+                </a>
+              {{ end }}
+            </div>
+            <div>
+              {{ with $mainPages.Next . }}
+                <a class="article-footer-link" href="{{ .RelPermalink }}">
+                  {{ .Title }}{{ partial "icon" "right" }}
+                </a>
+              {{ end }}
+            </div>
+          </div>
+        {{ end }}
+      {{ end }}
+    </section>
+
+    {{ partial "sidebar" . }}
+  </main>
+{{ end }}
